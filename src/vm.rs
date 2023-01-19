@@ -20,6 +20,7 @@ impl VM{
         for instruction in instructions{
             instruction.execute(&mut results);
         }
+        println!("{:?}", results);
         results
     }
 }

@@ -11,7 +11,5 @@ fn main() {
 
     let file_path = "src/test.txt";
     let instructions = VM::start_vm(file_path);
-    let results = VM::execute(instructions);
-    println!("{:?}", results);
-
+    VM::execute(instructions);
 }
