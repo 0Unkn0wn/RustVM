@@ -1,8 +1,11 @@
-add 1 29879879879879
-sub 2 1
-mul 2 2
-div 4 2
-print 'yes it works 1'
-print 'yes it works 2'
-print 'yes it works 3'
-add 1 32
+#data
+;da
+    .ceva "da"
+    .altceva "nu"
+#code
+    .main
+        add 1 2
+        sub 3 4
+        mul 5 6
+        div 7 8
+        print "test test"
