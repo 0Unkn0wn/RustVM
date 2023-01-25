@@ -14,5 +14,5 @@
         div 2 var
         print test 2
         print var 3
-        print text test for printing test
+        print text "test for printing test"
     .end
