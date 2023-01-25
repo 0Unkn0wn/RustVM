@@ -151,7 +151,17 @@ impl Instruction {
                     match operand {
                         Field::Integer(i) => print!("{} ", i),
 
-                        Field::String(s) => print!("{} ", s.replace("\"", ""))
+                        Field::String(s) => {
+                            if variables.iter().any(|var| var.name == s) {
+                                for var in variables {
+                                    if var.name == s {
+                                        print!("{} ", var.value.to_string());
+                                    }
+                                }
+                            } else {
+                                print!("{} ", s.replace("\"", ""));
+                            }
+                        }
                     }
                 }
                 println!();

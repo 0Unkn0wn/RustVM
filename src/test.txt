@@ -11,4 +11,7 @@
         mul 2 var
         div test 1
         div 2 var
+        print test 2
+        print var 3
+
     .end
