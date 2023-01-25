@@ -8,6 +8,7 @@ pub enum Token{
     Comment(String),
     Label(String),
     Directive(String),
+    Variable(String),
     End
 }
 
@@ -30,6 +31,8 @@ impl Token {
                         tokens.push_back(Token::Directive(text.to_string()));
                     } else if text.starts_with("#") {
                         tokens.push_back(Token::Label(text.to_string()));
+                    } else if text.starts_with("@") {
+                        tokens.push_back(Token::Variable(text.to_string()));
                     } else {
                         tokens.push_back(Token::Operation(text.to_string()));
                     }
@@ -48,6 +51,7 @@ impl Display for Token{
             Token::Comment(s) => write!(f, "Comment: {}", s),
             Token::Label(s) => write!(f, "Label: {}", s),
             Token::Directive(s) => write!(f, "Directive: {}", s),
+            Token::Variable(s) => write!(f, "Variable: {}", s),
             Token::End => write!(f, "End of line")
         }
     }

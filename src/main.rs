@@ -3,6 +3,7 @@ mod instruction;
 mod field;
 mod operation;
 mod token;
+mod variable;
 
 use crate::vm::VM;
 
@@ -10,8 +11,9 @@ use crate::vm::VM;
 fn main() {
 
     let file_path = "src/test.txt";
-    let instructions = VM::start_vm(file_path);
-    VM::execute(instructions);
+    let mut vm = VM::new();
+    vm.execute(file_path);
+    vm.print_stack();
 }
 
 // TODO

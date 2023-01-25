@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 #[derive(Debug)]
 pub enum Field {
     Integer(i64),
@@ -16,6 +18,15 @@ impl Field {
         match self {
             &Field::String(ref s) => Some(s.to_string()),
             _ => None
+        }
+    }
+}
+
+impl Display for Field {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            &Field::Integer(i) => write!(f, "{}", i),
+            &Field::String(ref s) => write!(f, "{}", s)
         }
     }
 }

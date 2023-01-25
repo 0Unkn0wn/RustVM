@@ -2,6 +2,7 @@ use std::collections::VecDeque;
 use crate::field::Field;
 use crate::operation::Operation;
 use crate::token::Token;
+use crate::variable::Variable;
 
 #[derive(Debug)]
 pub struct Instruction{
@@ -14,10 +15,11 @@ impl Instruction {
         Instruction{ operation, operands }
     }
 
-    pub fn from_tokens(tokens: VecDeque<Token>) -> Vec<Self> {
+    pub fn from_tokens(tokens: VecDeque<Token>) -> (Vec<Self>,Vec<String>) {
         //println!("{:?}", tokens); // Debugging
         let mut instructions: Vec<Instruction> = Vec::new();
-        for token in tokens {
+        let mut variables:Vec<String> = Vec::new();
+        for token in &tokens {
             match token {
                 Token::Operation(s) => {
                     let mut operands = VecDeque::new();
@@ -39,6 +41,9 @@ impl Instruction {
                         _ => println!("Label: {}", s)
                     }
                 },
+                Token::Variable(s) => {
+                    variables.push(s.to_string());
+                },
                 Token::Directive(s) => {
                     match s.as_str() {
                         ".code" => println!("Main program"),
@@ -48,17 +53,30 @@ impl Instruction {
                 _ => {}
             }
         }
-        instructions
-
+        (instructions,variables)
     }
 
-    pub fn execute(mut self, results: &mut VecDeque<Field>) {
+    pub fn execute_instruction(mut self, results: &mut VecDeque<Field>, variables: &Vec<Variable>) {
         match self.operation {
             Operation::Add => {
                 let a = self.operands.pop_front().unwrap();
                 let b = self.operands.pop_front().unwrap();
                 match (a, b) {
                     (Field::Integer(a), Field::Integer(b)) => results.push_back(Field::Integer(a + b)),
+                    (Field::String(a), Field::Integer(b)) => {
+                        for var in variables {
+                            if var.name == a {
+                                results.push_back(Field::Integer(var.value.to_int().unwrap() + b));
+                            }
+                        }
+                    },
+                    (Field::Integer(a), Field::String(b)) => {
+                        for var in variables {
+                            if var.name == b {
+                                results.push_back(Field::Integer(a + var.value.to_int().unwrap()));
+                            }
+                        }
+                    },
                     _ => panic!("Invalid operands")
                 }
             },
@@ -67,6 +85,20 @@ impl Instruction {
                 let b = self.operands.pop_front().unwrap();
                 match (a, b) {
                     (Field::Integer(a), Field::Integer(b)) => results.push_back(Field::Integer(a - b)),
+                    (Field::String(a), Field::Integer(b)) => {
+                        for var in variables {
+                            if var.name == a {
+                                results.push_back(Field::Integer(var.value.to_int().unwrap() - b));
+                            }
+                        }
+                    },
+                    (Field::Integer(a), Field::String(b)) => {
+                        for var in variables {
+                            if var.name == b {
+                                results.push_back(Field::Integer(a - var.value.to_int().unwrap()));
+                            }
+                        }
+                    },
                     _ => panic!("Invalid operands")
                 }
             },
@@ -75,6 +107,20 @@ impl Instruction {
                 let b = self.operands.pop_front().unwrap();
                 match (a, b) {
                     (Field::Integer(a), Field::Integer(b)) => results.push_back(Field::Integer(a * b)),
+                    (Field::String(a), Field::Integer(b)) => {
+                        for var in variables {
+                            if var.name == a {
+                                results.push_back(Field::Integer(var.value.to_int().unwrap() * b));
+                            }
+                        }
+                    },
+                    (Field::Integer(a), Field::String(b)) => {
+                        for var in variables {
+                            if var.name == b {
+                                results.push_back(Field::Integer(a * var.value.to_int().unwrap()));
+                            }
+                        }
+                    },
                     _ => panic!("Invalid operands")
                 }
             },
@@ -83,6 +129,20 @@ impl Instruction {
                 let b = self.operands.pop_front().unwrap();
                 match (a, b) {
                     (Field::Integer(a), Field::Integer(b)) => results.push_back(Field::Integer(a / b)),
+                    (Field::String(a), Field::Integer(b)) => {
+                        for var in variables {
+                            if var.name == a {
+                                results.push_back(Field::Integer(var.value.to_int().unwrap() / b));
+                            }
+                        }
+                    },
+                    (Field::Integer(a), Field::String(b)) => {
+                        for var in variables {
+                            if var.name == b {
+                                results.push_back(Field::Integer(a / var.value.to_int().unwrap()));
+                            }
+                        }
+                    },
                     _ => panic!("Invalid operands")
                 }
             },
@@ -91,7 +151,7 @@ impl Instruction {
                     match operand {
                         Field::Integer(i) => print!("{} ", i),
 
-                        Field::String(s) => print!("{} ", s)
+                        Field::String(s) => print!("{} ", s.replace("\"", ""))
                     }
                 }
                 println!();

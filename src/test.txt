@@ -1,11 +1,14 @@
 #data
-;da
-    .ceva "da"
-    .altceva "nu"
+     @test 2
+     @var 1
 #code
     .main
-        add 1 2
-        sub 3 4
-        mul 5 6
-        div 7 8
-        print "test test"
+        add test 1
+        add 2 var
+        sub test 2
+        sub 2 var
+        mul test 1
+        mul 2 var
+        div test 1
+        div 2 var
+    .end
