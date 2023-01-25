@@ -21,7 +21,7 @@ impl Variable {
                 variables.push(Variable::new(name, value));
             }
             else {
-                let value = Field::String(value.to_string());
+                let value = Field::String(value.to_string().replace("\"", ""));
                 variables.push(Variable::new(name, value));
             }
         }

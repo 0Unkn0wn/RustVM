@@ -1,6 +1,7 @@
 #data
      @test 2
      @var 1
+     @text "text_test"
 #code
     .main
         add test 1
@@ -13,5 +14,5 @@
         div 2 var
         print test 2
         print var 3
-
+        print text test for printing test
     .end
