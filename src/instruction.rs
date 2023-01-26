@@ -15,24 +15,25 @@ impl Instruction {
         Instruction{ operation, operands }
     }
 
-    pub fn from_tokens(tokens: VecDeque<Token>) -> (Vec<Self>,Vec<String>) {
+    pub fn from_tokens(mut tokens: VecDeque<Token>) -> (Vec<Self>,Vec<String>) {
         //println!("{:?}", tokens); // Debugging
         let mut instructions: Vec<Instruction> = Vec::new();
         let mut variables:Vec<String> = Vec::new();
-        for token in &tokens {
+        let start_index:usize;
+        let end_index:usize;
+        let mut loop_operations:VecDeque<Token> = VecDeque::new();
+        if tokens.iter().position(|x| x.to_string().contains(".loop")).is_some() {
+            start_index = tokens.iter().position(|x| x.to_string().contains(".loop")).unwrap();
+            // println!("Index of loop: {}", start_index); // Debugging
+            end_index = tokens.iter().position(|x| x.to_string().contains(".endloop")).unwrap();
+            // println!("Index of endloop: {}", end_index); // Debugging
+            loop_operations = tokens.drain(start_index+1..end_index).collect::<VecDeque<Token>>();
+            // println!("{:?}", loop_operations); // Debugging
+        }
+        for token in tokens {
             match token {
                 Token::Operation(s) => {
-                    let mut operands = VecDeque::new();
-                    let mut parts = s.split_whitespace();
-                    let operation= Operation::from(parts.next().unwrap());
-                    for part in parts {
-                        if part.parse::<i64>().is_ok() {
-                            operands.push_back(Field::Integer(part.parse::<i64>().unwrap()));
-                        } else {
-                            operands.push_back(Field::String(part.to_string()));
-                        }
-                    }
-                    instructions.push(Instruction::new(operation, operands));
+                    Self::process_operation(s, &mut instructions);
                 },
                 Token::Label(s) => {
                     match s.as_str() {
@@ -45,8 +46,28 @@ impl Instruction {
                     variables.push(s.to_string());
                 },
                 Token::Directive(s) => {
-                    match s.as_str() {
-                        ".code" => println!("Main program"),
+                    let mut parts = s.split_whitespace();
+                    let name = parts.next().unwrap();
+                    let mut loop_count: i64 = 0;
+                    match name {
+                        ".main" => println!("Main program"),
+                        ".end" => println!("End of program"),
+                        ".loop" => {
+                            println!("Loop start");
+                            for part in parts {
+                                if part.parse::<i64>().is_ok() {
+                                    loop_count= part.parse::<i64>().unwrap();
+                                }
+                            }
+                            for _ in 0..loop_count {
+                                for op in &loop_operations{
+                                    Self::process_operation(op.to_string(), &mut instructions);
+                                }
+                            }
+                        },
+                        ".endloop" => {
+                            println!("End of loop")
+                        },
                         _ => println!("Directive: {}", s)
                     }
                 },
@@ -54,6 +75,20 @@ impl Instruction {
             }
         }
         (instructions,variables)
+    }
+
+    pub fn process_operation(op: String, instr: &mut Vec<Instruction>){
+        let mut operands = VecDeque::new();
+        let mut parts = op.split_whitespace();
+        let operation= Operation::from(parts.next().unwrap());
+        for part in parts {
+            if part.parse::<i64>().is_ok() {
+                operands.push_back(Field::Integer(part.parse::<i64>().unwrap()));
+            } else {
+                operands.push_back(Field::String(part.to_string()));
+            }
+        }
+        instr.push(Instruction::new(operation, operands));
     }
 
     pub fn execute_instruction(mut self, results: &mut VecDeque<Field>, variables: &Vec<Variable>) {

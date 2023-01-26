@@ -47,7 +47,7 @@ impl Token {
 impl Display for Token{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            Token::Operation(s) => write!(f, "Operation: {}", s),
+            Token::Operation(s) => write!(f, "{}", s), //doesnt have the "Operation:" prefix like the others to make it easier to process the loop operations
             Token::Comment(s) => write!(f, "Comment: {}", s),
             Token::Label(s) => write!(f, "Label: {}", s),
             Token::Directive(s) => write!(f, "Directive: {}", s),

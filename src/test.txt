@@ -15,4 +15,7 @@
         print test 2
         print var 3
         print text "test for printing test"
+        .loop 2
+            print "testing the loop"
+        .endloop
     .end
