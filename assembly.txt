@@ -12,8 +12,8 @@
         mul 2 var
         div test 1
         div 2 var
-        print test 2
-        print var 3
+        print "the first is the var=>" test 2123
+        print "the same here" var 3321
         print text "test for printing test"
         .loop 2
             print "testing the loop"
