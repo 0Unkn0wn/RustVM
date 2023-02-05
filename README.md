@@ -335,12 +335,28 @@ testing the loop
 
 ## Future reading
 
-For anyone interested to read further into rust I will leave some links here at the end.
+For anyone interested to read further into rust and VMs I will leave some links here at the end.
 
 <https://doc.rust-lang.org/book/>
 
 <https://doc.rust-lang.org/stable/rust-by-example/index.html>
 
 <https://doc.rust-lang.org/std/index.html>
+
+<https://litslink.com/blog/what-is-rust-programming-language>
+
+<https://serokell.io/blog/rust-guide#rust-vs.-c%2B%2B>
+
+<https://www.ibm.com/topics/virtual-machines>
+
+<https://www.vmware.com/topics/glossary/content/virtual-machine.html>
+
+<https://www.redhat.com/en/topics/virtualization/what-is-a-virtual-machine>
+
+<https://azure.microsoft.com/en-gb/resources/cloud-computing-dictionary/what-is-a-virtual-machine/>
+
+<https://www.citrix.com/solutions/vdi-and-daas/what-is-a-virtual-machine.html>
+
+<https://cloud.google.com/learn/what-is-a-virtual-machine>
 
 For specific topics there are a lot of links embedded into this document.
