@@ -1,4 +1,5 @@
 use std::collections::VecDeque;
+use std::str::SplitWhitespace;
 use crate::field::Field;
 use crate::operation::Operation;
 use crate::token::Token;
@@ -48,22 +49,11 @@ impl Instruction {
                 Token::Directive(s) => {
                     let mut parts = s.split_whitespace();
                     let name = parts.next().unwrap();
-                    let mut loop_count: i64 = 0;
                     match name {
                         ".main" => println!("Main program"),
                         ".end" => println!("End of program"),
                         ".loop" => {
-                            println!("Loop start");
-                            for part in parts {
-                                if part.parse::<i64>().is_ok() {
-                                    loop_count= part.parse::<i64>().unwrap();
-                                }
-                            }
-                            for _ in 0..loop_count {
-                                for op in &loop_operations{
-                                    Self::process_operation(op.to_string(), &mut instructions);
-                                }
-                            }
+                            Self::process_loop(parts,&loop_operations, &mut instructions);
                         },
                         ".endloop" => {
                             println!("End of loop")
@@ -90,6 +80,22 @@ impl Instruction {
         }
         instr.push(Instruction::new(operation, operands));
     }
+
+    pub fn process_loop(parts:SplitWhitespace, loop_operations: &VecDeque<Token>, instr: &mut Vec<Instruction>){
+        println!("Loop start");
+        let mut loop_count:i64 = 0;
+        for part in parts {
+            if part.parse::<i64>().is_ok() {
+               loop_count= part.parse::<i64>().unwrap();
+            }
+        }
+        for _ in 0..loop_count {
+            for op in loop_operations{
+                Self::process_operation(op.to_string(),instr);
+            }
+        }
+    }
+
 
     pub fn execute_instruction(mut self, results: &mut VecDeque<Field>, variables: &Vec<Variable>) {
         match self.operation {

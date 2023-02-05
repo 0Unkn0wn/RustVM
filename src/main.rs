@@ -15,6 +15,3 @@ fn main() {
     vm.execute(file_path);
     vm.print_stack();
 }
-
-// TODO
-// - [ ] ar fi bun daca as avea si un read ceva
