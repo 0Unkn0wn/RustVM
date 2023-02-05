@@ -34,7 +34,7 @@ This project will focus on the process virtual machines.
 
 ## What are VMs used for
 
-These are some of the use cases where VMs are being actively used:
+These are some use cases where VMs are being actively used:
 
 - Testing software on various platforms and operating systems without needing a second device.
 
