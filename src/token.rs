@@ -14,6 +14,9 @@ pub enum Token{
 
 impl Token {
     pub fn tokenize_file(file_name: &str) -> VecDeque<Token> {
+        /// This function takes a file name and returns a vector of tokens.
+        /// # Arguments
+        /// * `file_name` - A string slice that holds the file name
         let file = fs::read_to_string(file_name).expect("Unable to read file");
         let mut tokens = VecDeque::new();
         let mut lines = file.lines();

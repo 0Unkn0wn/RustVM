@@ -14,6 +14,9 @@ impl VM{
     }
 
     pub fn execute(&mut self, file_path: &str) {
+        /// Execute the assembly file
+        /// # Arguments
+        /// * `file_path` - The path to the assembly file
         let tokens = Token::tokenize_file(file_path);
         // println!("{:?}", tokens); // Debugging
 

@@ -49,6 +49,12 @@ impl Display for Operation {
 
 impl Operation {
     pub fn execute(&self, stack: &mut VecDeque<i64>) {
+        /// This function takes an operation and a stack and executes the operation.
+        /// # Arguments
+        /// * `self` - The operation to execute
+        /// * `stack` - The stack to execute the operation on
+        /// # Panics
+        /// This function panics if the stack is empty.
         let a = stack.pop_back().unwrap();
         let b = stack.pop_back().unwrap();
         match self {

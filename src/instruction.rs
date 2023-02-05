@@ -13,10 +13,20 @@ pub struct Instruction{
 
 impl Instruction {
     pub fn new(operation: Operation, operands: VecDeque<Field>) -> Self {
+        /// Creates a new Instruction
+        /// # Arguments
+        /// * `operation` - The operation to be performed
+        /// * `operands` - The operands to be used in the operation
         Instruction{ operation, operands }
     }
 
     pub fn from_tokens(mut tokens: VecDeque<Token>) -> (Vec<Self>,Vec<String>) {
+        /// Creates a vector of Instructions and a vector of Variables from a vector of Tokens
+        /// # Arguments
+        /// * `tokens` - The vector of Tokens to be processed
+        /// # Returns
+        /// * `instructions` - The vector of Instructions
+        /// * `variables` - The vector of Variables
         //println!("{:?}", tokens); // Debugging
         let mut instructions: Vec<Instruction> = Vec::new();
         let mut variables:Vec<String> = Vec::new();
@@ -68,6 +78,10 @@ impl Instruction {
     }
 
     pub fn process_operation(op: String, instr: &mut Vec<Instruction>){
+        /// Creates an Operation from a String and adds it to a vector of Instructions
+        /// # Arguments
+        /// * `op` - The String to be processed
+        /// * `instr` - The vector of Instructions to be added to
         let mut operands = VecDeque::new();
         let mut parts = op.split_whitespace();
         let operation= Operation::from(parts.next().unwrap());
@@ -82,6 +96,11 @@ impl Instruction {
     }
 
     pub fn process_loop(parts:SplitWhitespace, loop_operations: &VecDeque<Token>, instr: &mut Vec<Instruction>){
+        /// Processes a loop and adds the operations to a vector of Instructions
+        /// # Arguments
+        /// * `parts` - The parts of the loop syntax to be processed
+        /// * `loop_operations` - The operations to be added to the loop
+        /// * `instr` - The vector of Instructions to be added to
         println!("Loop start");
         let mut loop_count:i64 = 0;
         for part in parts {
@@ -98,6 +117,11 @@ impl Instruction {
 
 
     pub fn execute_instruction(mut self, results: &mut VecDeque<Field>, variables: &Vec<Variable>) {
+        /// Executes an Instruction
+        /// # Arguments
+        /// * `self` - The Instruction to be executed
+        /// * `results` - The vector of Fields to be added to
+        /// * `variables` - The vector of Variables to be used
         match self.operation {
             Operation::Add => {
                 let a = self.operands.pop_front().unwrap();

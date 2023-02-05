@@ -11,6 +11,9 @@ impl Variable {
     pub fn new(name: String, value: Field) -> Self { Variable{ name, value } }
 
     pub fn from_vec_string(vec_string: Vec<String>) -> Vec<Self> {
+        /// This function takes a vector of strings and returns a vector of variables.
+        /// # Arguments
+        /// * `vec_string` - A vector of strings
         let mut variables: Vec<Variable> = Vec::new();
         for string in vec_string {
             let mut parts = string.split_whitespace();

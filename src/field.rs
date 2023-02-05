@@ -8,6 +8,7 @@ pub enum Field {
 
 impl Field {
     pub fn to_int(&self) -> Option<i64> {
+        /// This function takes a field and returns an integer if the field is an integer.
         match self {
             &Field::Integer(i) => Some(i),
             _ => None
@@ -15,6 +16,7 @@ impl Field {
     }
 
     pub fn to_s(&self) -> Option<String> {
+        /// This function takes a field and returns a string if the field is a string.
         match self {
             &Field::String(ref s) => Some(s.to_string()),
             _ => None
